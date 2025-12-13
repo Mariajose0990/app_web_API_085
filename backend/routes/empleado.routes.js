@@ -38,7 +38,7 @@ router.get('/:id', empleadoCtrl.getUnicoEmpleado);// obtiene un único empleado
 
 router.put('/:id',empleadoCtrl.editarEmpleado); //Actualizar datos (uno a la vez)
 
-router.delete('/:id', empleadoCtrl.eliminarEmpleado);
+router.delete('/:id', empleadoCtrl.eliminarEmpleado); //Eliminar empleado
 
 module.exports = router;
  
