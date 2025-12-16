@@ -1,5 +1,6 @@
 
  const Usuario = require('../models/usuario');
+ const bcrypt = require("bcryptjs");
  const usuarioCtrl = {};
  
  /**
@@ -13,7 +14,16 @@
  
  // Crear usuario
  usuarioCtrl.createUsuario = async (req, res) => { 
-    const nuevoUsuario = new Usuario(req.body);
+     const { nombre, correo, contraseña, rol } = req.body;
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(contraseña, salt);
+
+    const nuevoUsuario = new Usuario({ nombre,
+    correo,
+    contraseña: hash,
+    rol});
+
     await nuevoUsuario.save();    
     res.json({
         'status': 'Usuario guardado'
@@ -29,11 +39,13 @@
  //Actualizar usuario
  usuarioCtrl.editarUsuario = async (req, res) =>  {
      const { id } = req.params; 
-     const usuarioEdit = {  
-         nombre: req.body.nombre,
-         correo: req.body.correo,
-         contraseña: req.body.contraseña
-     };
+      const { nombre, correo, contraseña } = req.body;
+     const usuarioEdit = {  nombre, correo};
+
+      if (contraseña) {
+    const salt = await bcrypt.genSalt(10);
+    usuarioEdit.contraseña = await bcrypt.hash(contraseña, salt);
+  }
      await Usuario.findByIdAndUpdate(id, {$set: usuarioEdit}, {new:  true}); 
      res.json({status: 'Usuario Actualizado'});
  }

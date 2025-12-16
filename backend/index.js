@@ -13,6 +13,7 @@ app.use(cors({origin: 'http://localhost:3001'})); // método para comunicar con 
 app.use('/api/empleados', require('./routes/empleado.routes'));
 app.use('/api/productos', require('./routes/producto.routes'));
 app.use('/api/usuarios', require('./routes/usuario.routes'));
+app.use('/api/auth', require('./routes/auth.routes'));
 ;
 // Iniciando el servidor
 app.listen(app.get('port'), () => {// esta es una mejor manera de configurar el puerto
